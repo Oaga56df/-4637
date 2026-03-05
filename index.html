@@ -116,6 +116,38 @@
             fill: white;
         }
 
+        /* 新增联系按钮样式 - 与WhatsApp按钮风格统一 */
+        #contactButton {
+            position: absolute;
+            bottom: -15px;
+            right: 220px; /* 与WhatsApp按钮保持间距 */
+            background-color: #CE1126; /* 马来西亚红配色 */
+            color: white;
+            border: none;
+            border-radius: 28px;
+            padding: 12px 24px;
+            font-size: 15px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            box-shadow: 0 6px 15px rgba(206, 17, 38, 0.25);
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        #contactButton:hover {
+            background-color: #a00e1f;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(206, 17, 38, 0.35);
+        }
+
+        #contactButton:active {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(206, 17, 38, 0.25);
+        }
+
         /* 个人信息主体区域 */
         .profile-content {
             padding: 90px 40px 40px;
@@ -195,11 +227,17 @@
         }
 
         /* 响应式适配 - 手机端调整按钮位置 */
-        @media (max-width: 500px) {
+        @media (max-width: 700px) {
+            #contactButton {
+                right: 40px;
+                bottom: -90px;
+                width: calc(100% - 80px);
+                justify-content: center;
+            }
             .whatsapp-btn {
                 left: 40px;
                 right: 40px;
-                bottom: -70px; /* 手机端同步往下调整 */
+                bottom: -150px; /* 手机端往下调整，避免重叠 */
                 width: calc(100% - 80px);
                 justify-content: center;
             }
@@ -219,6 +257,9 @@
                 class="profile-avatar"
                 onerror="this.onerror=null; this.src='https://picsum.photos/id/29/300/300';"
             >
+            <!-- 新增联系按钮 - 带Pixel事件追踪 -->
+            <button id="contactButton">联系</button>
+            
             <!-- WhatsApp跳转按钮 -->
             <a href="https://wa.me/60123456789?text=您好，我想认识一下您" class="whatsapp-btn" target="_blank" rel="noopener noreferrer">
                 <svg viewBox="0 0 24 24">
@@ -278,5 +319,24 @@
             </p>
         </div>
     </div>
+
+    <!-- 联系按钮的Pixel事件追踪脚本 -->
+    <script type="text/javascript">
+    document.getElementById('contactButton').addEventListener('click', function() {
+        // 触发Facebook Pixel的Contact自定义事件
+        fbq('track', 'Contact', {
+            content_name: 'Amelia Wong 联系按钮',
+            content_category: '个人简介页面',
+            currency: 'MYR',
+            value: 0
+        });
+        
+        // 可选：点击按钮后跳转到WhatsApp（和原按钮功能一致）
+        window.open('https://wa.me/60123456789?text=您好，我想认识一下您', '_blank');
+        
+        // 可选：添加提示信息
+        alert('已触发联系事件，即将为您打开WhatsApp！');
+    }, false);
+    </script>
 </body>
 </html>
